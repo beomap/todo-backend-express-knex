@@ -20,8 +20,8 @@
 - Missing features
   - Authentication/Authorization: Currently, there is no login system or user roles.
   - Group todos by Org and Project
-  - Assigning/Unassigning tasks
-  - Comment on a task
+  - Assigning/Unassigning todos
+  - Comment on a todo
   - Notifications
 
 ### Implementation plan
@@ -32,8 +32,8 @@
 
   - Authentication/Authorization
   - Group todos by Org and Project
-  - Assign/Unassign a tasks
-  - Comment on a task
+  - Assign/Unassign a todos
+  - Comment on a todo
 
 - ERD design
 - API design
