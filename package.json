@@ -8,7 +8,7 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "test": "cd server && jest",
     "test:watch": "cd server && jest --watch",
-    "dev:server": "tsx server/server.ts",
+    "dev:server": "tsx watch server/server.ts",
     "start": "cd server && node server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
