@@ -8,7 +8,7 @@ async function createOrg(prisma: PrismaClient, name: string) {
   });
 }
 
-async function getUserById(prisma: PrismaClient, id: string) {
+async function getById(prisma: PrismaClient, id: string) {
   return prisma.org.findUnique({
     where: {
       id,
@@ -84,10 +84,26 @@ async function deleteOrgsMemberByUserId(prisma: PrismaClient, userId: string) {
   });
 }
 
+async function getOrgMember(
+  prisma: PrismaClient,
+  orgId: string,
+  userId: string,
+) {
+  return prisma.orgMember.findUnique({
+    where: {
+      orgId_userId: {
+        orgId,
+        userId,
+      },
+    },
+  });
+}
+
 export const OrgRepo = {
   createOrg,
-  getUserById,
+  getById,
   upsertOrgMember,
   getOrgMembers,
+  getOrgMember,
   deleteOrgsMemberByUserId,
 };
