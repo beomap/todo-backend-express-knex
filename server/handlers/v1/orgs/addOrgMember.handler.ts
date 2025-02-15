@@ -5,36 +5,49 @@ import $prisma from "../../../lib/prisma";
 import { UserOrgRole } from "@prisma/client";
 
 const input = z.object({
-  userId: z.string(),
+  user_id: z.string(),
+  role: z.enum(["ADMIN", "MEMBER"]),
 });
 
 export async function addOrgMemberOrgHandler(req: Request, res: Response) {
   try {
-    const data = input.parse(req.body);
-    const org = await OrgRepo.getOrgMember(
+    const orgMem = await OrgRepo.getOrgMember(
       $prisma,
       req.params.id,
       // @ts-ignore
       req.user.id,
     );
 
-    if (!org) {
-      return res.status(404).json({
+    if (!orgMem) {
+      res.status(404).json({
         message: "Org not found",
       });
+      return;
     }
+
+    if (
+      orgMem.role !== UserOrgRole.OWNER &&
+      orgMem.role !== UserOrgRole.ADMIN
+    ) {
+      res.status(403).json({
+        message: "Permission denied",
+      });
+      return;
+    }
+
+    const data = input.parse(req.body);
 
     const mem = await OrgRepo.upsertOrgMember(
       $prisma,
-      org.id,
-      data.userId,
-      UserOrgRole.OWNER,
+      orgMem.orgId,
+      data.user_id,
+      data.role as UserOrgRole,
     );
-
     res.status(200).json({
       data: mem,
     });
   } catch (err: any) {
+    console.log(`>>>err`, err);
     res.status(500).json(err);
   }
 }

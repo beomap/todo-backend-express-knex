@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { UserRepo } from "../../../repo/user.repo";
-import { hashPassword, signJWT } from "../../../lib/hash";
-import { JWT_SECRET } from "../../../lib/env";
 import { OrgRepo } from "../../../repo/org.repo";
 import $prisma from "../../../lib/prisma";
-import { PrismaClient, UserOrgRole } from "@prisma/client";
+import { UserOrgRole } from "@prisma/client";
 
 const registerInput = z.object({
   name: z.string(),
@@ -33,6 +30,7 @@ export async function createOrgHandler(req: Request, res: Response) {
       data: org,
     });
   } catch (err: any) {
+    console.log(`>>>err`, err);
     res.status(500).json(err);
   }
 }

@@ -7,6 +7,7 @@ import { loginHandler, registerHandler } from "./handlers/v1/auth";
 import { authGuard } from "./middleware/auth";
 import { getMeHandler } from "./handlers/v1/auth/me.handler";
 import { createOrgHandler } from "./handlers/v1/orgs/createOrg.handler";
+import { addOrgMemberOrgHandler } from "./handlers/v1/orgs/addOrgMember.handler";
 
 app.get("/api/v1/health", healthHandler);
 
@@ -17,6 +18,7 @@ app.get("/api/v1/auth/me", authGuard, getMeHandler);
 
 // org
 app.post("/api/v1/orgs", authGuard, createOrgHandler);
+app.post("/api/v1/orgs/:id/members", authGuard, addOrgMemberOrgHandler);
 // app.get("/:id", routes.getTodo);
 
 // app.post("/", routes.postTodo);
