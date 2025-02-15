@@ -61,6 +61,7 @@ model OrgMember {
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
+  @@unique([orgId, userId])
   @@map("org_members")
 }
 
