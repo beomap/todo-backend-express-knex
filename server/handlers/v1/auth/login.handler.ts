@@ -3,6 +3,7 @@ import { z } from "zod";
 import { UserRepo } from "../../../repo/user.repo";
 import { comparePassword, hashPassword, signJWT } from "../../../lib/hash";
 import { JWT_SECRET } from "../../../lib/env";
+import $prisma from "../../../lib/prisma";
 
 const registerInput = z.object({
   email: z.string().email(),
@@ -12,7 +13,7 @@ const registerInput = z.object({
 export async function loginHandler(req: Request, res: Response) {
   try {
     const data = registerInput.parse(req.body);
-    const user = await UserRepo.getUserByEmail(data.email);
+    const user = await UserRepo.getUserByEmail($prisma, data.email);
 
     if (!user) {
       res.status(401).json({

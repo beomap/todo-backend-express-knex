@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { UserRepo } from "../../../repo/user.repo";
+import $prisma from "../../../lib/prisma";
 
 export async function getMeHandler(req: Request, res: Response) {
   try {
     // @ts-ignore
-    const user = await UserRepo.getUserById(req.user?.id);
+    const user = await UserRepo.getUserById($prisma, req.user?.id);
     if (!user) {
       res.status(401).json({
         error: "user not found",
