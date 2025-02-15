@@ -15,19 +15,21 @@ export async function loginHandler(req: Request, res: Response) {
     const user = await UserRepo.getUserByEmail(data.email);
 
     if (!user) {
-      return res.status(401).json({
+      res.status(401).json({
         error: "invalid email or password",
       });
+      return;
     }
 
     const isOk = await comparePassword(data.password, user?.password);
     if (!isOk) {
-      return res.status(401).json({
+      res.status(401).json({
         error: "invalid email or password",
       });
+      return;
     }
 
-    const access_token = signJWT(
+    const access_token = await signJWT(
       {
         email: user.email,
         id: user.id,
@@ -43,8 +45,6 @@ export async function loginHandler(req: Request, res: Response) {
       },
     });
   } catch (err: any) {
-    res.status(500).json({
-      error: err.message,
-    });
+    res.status(500).json(err);
   }
 }

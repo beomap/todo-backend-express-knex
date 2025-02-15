@@ -10,7 +10,7 @@ const registerInput = z
     password: z.string(),
     confirm_password: z.string(),
   })
-  .refine((data) => data.password !== data.confirm_password, {
+  .refine((data) => data.password === data.confirm_password, {
     message: "Passwords dont's match",
     path: ["confirm_password"],
   });
@@ -23,7 +23,7 @@ export async function registerHandler(req: Request, res: Response) {
       pwd: await hashPassword(data.password),
     });
 
-    const access_token = signJWT(
+    const access_token = await signJWT(
       {
         email: user.email,
         id: user.id,
@@ -39,8 +39,6 @@ export async function registerHandler(req: Request, res: Response) {
       },
     });
   } catch (err: any) {
-    res.status(500).json({
-      error: err.message,
-    });
+    res.status(500).json(err);
   }
 }
