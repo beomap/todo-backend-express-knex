@@ -28,7 +28,8 @@
     "nodemon": "^2.0.2",
     "pg": "^7.14.0",
     "prisma": "^6.3.1",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

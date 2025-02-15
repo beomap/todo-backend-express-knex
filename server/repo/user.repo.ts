@@ -1,4 +1,3 @@
-import { equal } from "assert";
 import $prisma from "../lib/prisma";
 
 async function createUser(input: { email: string; pwd: string }) {
@@ -26,7 +25,7 @@ async function getUserById(id: string) {
   });
 }
 
-export const TodoRepo = {
+export const UserRepo = {
   createUser,
   getUserByEmail,
   getUserById,

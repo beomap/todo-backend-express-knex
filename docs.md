@@ -37,4 +37,51 @@
 
 - ERD design
 - API design
+
+```markdown
+Base URL: api/v1
+
+#### Authentication
+
+- POST `/auth/register` - Register a new user
+- POST `/auth/login` - Login the user
+
+- POST `/auth/logout` - Logout the user //
+
+#### Orgs
+
+- POST `/orgs` - Create new organization
+- GET `/orgs` - Get list of user's organization, support filter by name, pagination
+- GET `orgs/:id` - Get orgs details (members count, projects count) // WILL NOT IMPLEMENT
+- PUT `orgs/:id` - Update the orgs details
+- GET `orgs/:id/members` - Get orgs members with pagination
+- POST `orgs/:id/members` - Add an user to the orgs, only admin can do this
+- POST `orgs/:id/members/:userId` - remove an user from the orgs, only admin can do this
+- PATH `orgs/:id/members/:userId/role` - update role for the member
+
+#### Projects
+
+- POST `orgs/:id/projects` - Create a new project
+- GET `orgs/:id/projects` - List of org's project, support pagination
+- GET `/projects/:id` - Get project details // WILL NOT IMPLEMENT
+- PUT `/projects/:id` - Update project details
+- DELETE `/projects/:id` - Delete a project
+
+#### Todos
+
+- POST `/projects/:id/todos` - Create a todo in a project
+- GET `/projects/:id/todos` - Get list of todos, support pagination, filter by status, assigned user
+- GET `/todos/:id` - Get details of the todo // WILL NOT IMPLEMENT
+- PUT `/todos/:id` - Update details of the todo
+- POST `/todos/:id/assignees` - Assign user to a todo
+- DELETE `/todos/:id/assignees/:userId` - UnAssign user to a todo
+- POST `/todos/:id/comments` - Add comment to a todo
+- GET `/todos/:id/comments` - Add comment to a todo
+
+#### Comments
+
+- PUT `/comments/:id` update the comment, only the author can edit
+- DELETE `/comments/:id` remove the comment, only the author can remove
+```
+
 - Code implementation
