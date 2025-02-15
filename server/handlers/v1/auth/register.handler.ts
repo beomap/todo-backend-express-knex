@@ -15,7 +15,7 @@ const registerInput = z
     path: ["confirm_password"],
   });
 
-export async function register(req: Request, res: Response) {
+export async function registerHandler(req: Request, res: Response) {
   try {
     const data = registerInput.parse(req.body);
     const user = await UserRepo.createUser({
