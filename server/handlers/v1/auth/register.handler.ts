@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { UserRepo } from "../../../repo/user.repo";
-import { hashPassword } from "../../../lib/hash";
+import { hashPassword, signJWT } from "../../../lib/hash";
+import { JWT_SECRET } from "../../../lib/env";
 
 const registerInput = z
   .object({
@@ -22,7 +23,21 @@ export async function register(req: Request, res: Response) {
       pwd: await hashPassword(data.password),
     });
 
-    // TODO: add jwt
+    const access_token = signJWT(
+      {
+        email: user.email,
+        id: user.id,
+      },
+      JWT_SECRET,
+    );
+
+    res.status(200).json({
+      data: {
+        id: user.id,
+        email: user.email,
+        access_token,
+      },
+    });
   } catch (err: any) {
     res.status(500).json({
       error: err.message,
