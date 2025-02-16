@@ -55,7 +55,7 @@ async function getByOrg(
   });
 }
 
-export const OrgRepo = {
+export const ProjectRepo = {
   create,
   getById,
   getByOrg,

@@ -1,8 +1,3 @@
-## About my self
-
-- Hieu Vu - HCMC, Vietnam
-- Software Engineer with 8 years of experience working as backend and frontend engineer
-
 ## The Todos App
 
 ### Codebase Analysis
@@ -36,6 +31,85 @@
   - Comment on a todo
 
 - ERD design
+
+```
+Table "Users" {
+  "id" text [pk]
+  "email" text [unique]
+  "password" text [note: "hased pwd"]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+Table "Orgs" {
+  "id" text [pk]
+  "name" text
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+
+Enum "UserOrgRole" {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+Table "OrgMembers" {
+  "id" text [pk]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+  "org_id" text [ref:> Orgs.id]
+  "user_id" text [ref:>Users.id]
+  "role" UserOrgRole
+}
+
+Table "Projects" {
+  "id" text [pk]
+  "name" text
+  "description" text
+  "org_id" text [ref:>Orgs.id]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+Enum TodoStatus {
+  TODO // starter
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+  CANCELLED
+}
+
+Table "Todos" {
+  "id" text [pk]
+  "title" text
+  "description" text
+  "status" TodoStatus
+  "project_id" text [ref:>Projects.id]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+Table "TodoAssignees" {
+ "id" text [pk]
+  "todo_id" text [ref:>Todos.id]
+  "user_id" text [ref:>Users.id]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+Table "Comments" {
+  "id" text [pk]
+  "message" text
+  "todo_id" text [ref:>Todos.id]
+  "user_id" text [ref:>Users.id]
+  "created_at" timestamptz [default: "now()"]
+  "updated_at" timestamptz [default: "now()"]
+}
+
+```
+
 - API design
 
 ```markdown
@@ -46,13 +120,14 @@ Base URL: api/v1
 - POST `/auth/register` - Register a new user
 - POST `/auth/login` - Login the user
 
-- POST `/auth/logout` - Logout the user //
+- POST `/auth/logout` - Logout the user
+- POST `/auth/me` - Logout the user
 
 #### Orgs
 
 - POST `/orgs` - Create new organization
 - GET `/orgs` - Get list of user's organization, support filter by name, pagination
-- GET `orgs/:id` - Get orgs details (members count, projects count) // WILL NOT IMPLEMENT
+- GET `orgs/:id` - Get orgs details (members count, projects count)
 - PUT `orgs/:id` - Update the orgs details
 - GET `orgs/:id/members` - Get orgs members with pagination
 - POST `orgs/:id/members` - Add an user to the orgs, only admin can do this
@@ -63,7 +138,7 @@ Base URL: api/v1
 
 - POST `orgs/:id/projects` - Create a new project
 - GET `orgs/:id/projects` - List of org's project, support pagination
-- GET `/projects/:id` - Get project details // WILL NOT IMPLEMENT
+- GET `/projects/:id` - Get project details
 - PUT `/projects/:id` - Update project details
 - DELETE `/projects/:id` - Delete a project
 
@@ -71,7 +146,7 @@ Base URL: api/v1
 
 - POST `/projects/:id/todos` - Create a todo in a project
 - GET `/projects/:id/todos` - Get list of todos, support pagination, filter by status, assigned user
-- GET `/todos/:id` - Get details of the todo // WILL NOT IMPLEMENT
+- GET `/todos/:id` - Get details of the todo
 - PUT `/todos/:id` - Update details of the todo
 - POST `/todos/:id/assignees` - Assign user to a todo
 - DELETE `/todos/:id/assignees/:userId` - UnAssign user to a todo

@@ -5,14 +5,14 @@ import { comparePassword, hashPassword, signJWT } from "../../../lib/hash";
 import { JWT_SECRET } from "../../../lib/env";
 import $prisma from "../../../lib/prisma";
 
-const registerInput = z.object({
+const input = z.object({
   email: z.string().email(),
   password: z.string(),
 });
 
 export async function loginHandler(req: Request, res: Response) {
   try {
-    const data = registerInput.parse(req.body);
+    const data = input.parse(req.body);
     const user = await UserRepo.getUserByEmail($prisma, data.email);
 
     if (!user) {

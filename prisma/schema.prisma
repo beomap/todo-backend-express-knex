@@ -116,6 +116,7 @@ model TodoAssignee {
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
+  @@unique([todoId, userId])
   @@map("todo_assignees")
 }
 

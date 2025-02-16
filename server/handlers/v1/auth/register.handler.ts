@@ -5,7 +5,7 @@ import { hashPassword, signJWT } from "../../../lib/hash";
 import { JWT_SECRET } from "../../../lib/env";
 import $prisma from "../../../lib/prisma";
 
-const registerInput = z
+const input = z
   .object({
     email: z.string().email(),
     password: z.string(),
@@ -18,7 +18,7 @@ const registerInput = z
 
 export async function registerHandler(req: Request, res: Response) {
   try {
-    const data = registerInput.parse(req.body);
+    const data = input.parse(req.body);
     const user = await UserRepo.createUser($prisma, {
       email: data.email,
       pwd: await hashPassword(data.password),
